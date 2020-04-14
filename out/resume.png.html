@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta charset="utf-8">
+        <title>Your Name</title>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic'
+        rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <style>
+            * {
+              box-sizing: border-box;
+            }
+            
+            main {
+              display: block;
+            }
+            
+            body {
+              font-size: 15px;
+              color: #333;
+              line-height: 1.42857143;
+              background-color: #F0F0F0;
+              margin: 0;
+              padding: 0;
+              font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', 'Segoe UI', 'Calibri', 'sans-serif';
+            }
+            
+            /* Typical page borders are awkward when rendered to PDF. */
+            body.pdf {
+              background-color: #FFFFFF;
+            }
+            
+            /* Adobe or wkhtmltopdf has issues with the <main> tag, so we use <div> for
+            the PDF case, <main> for the HTML case, and style both via an ID. */
+            #main {
+              background-color: #FFF;
+              margin: 10px;
+              padding: 10px;
+              border: 1px solid #E6E6E6;
+            }
+            
+            body.pdf > #main {
+              border: none;
+            }
+            
+            #container > header {
+              padding-top: 6em;
+              padding-bottom: 1em;
+            }
+            
+            body.pdf #container > header {
+              padding: 0;
+            }
+            
+            #main > #container > section {
+              margin-left: 150px;
+              position: relative;
+              display: block;
+            }
+            
+            section > div {
+              margin-bottom: 60px;
+            }
+            
+            span.fa
+            {
+              font-size: 56px;
+              position: absolute;
+              top: 37px;
+              transform: translateY(-50%);
+              left: -100px;
+              color: #1a4367;
+            }
+            
+            hr {
+              margin-top: 20px;
+              margin-bottom: 20px;
+              border: 0;
+              border-top: 1px solid #EEE;
+            }
+            
+            .tenure, .keywords {
+              font-size: 75%;
+            }
+            
+            h1 {
+              margin: 0;
+              font-size: 46px;
+              display: inline-block;
+            }
+            
+            h2 {
+              font-size: 30px;
+              color: #4376a2;
+              text-transform: uppercase;
+              font-weight: normal;
+              padding-top: 20px;
+              margin-bottom: 60px;
+            }
+            
+            h3 {
+              margin-bottom: 0;
+              font-size: 18px;
+            }
+            
+            a, a:visited {
+              color: #428BCA;
+              text-decoration: none;
+              font-weight: bold;
+            }
+            
+            a:hover {
+              text-decoration: underline;
+            }
+            
+            .defunct {
+              color: #989898;
+              font-weight: bold;
+            }
+            
+            #summary {
+              font-size: 150%;
+              margin-left: 0;
+              padding: 20px 0;
+            }
+            
+            #summary > p > strong {
+              font-size: 1.25em;
+            }
+            
+            #contact {
+              float: right;
+            }
+            
+            #summary > header > .fa-info {
+              font-size: 70px;
+              letter-spacing: 5px;
+              text-transform: uppercase;
+              font-weight: normal;
+              top: 50%;
+              left: -85px;
+              transform: translateY(-50%);
+            }
+            
+            #summary h2 {
+              display: none;
+            }
+            
+            
+            .label-keyword {
+              display: inline-block;
+              background: #e8f4ff;
+              color: black;
+              font-size: 0.9em;
+              padding: 5px;
+              border: 1px solid #357ebd;
+              border-radius: 5px;
+              margin-top: 2px;
+              font-weight: bold;
+              text-align: center;
+            }
+            
+            .notes {
+              font-size: 10px;
+              display: block;
+              font-weight: normal;
+              text-transform: uppercase;
+            }
+            
+            .card-skills {
+                position: relative;
+            }
+            .card-nested {
+                min-height: 0;
+                margin-bottom: 10px;
+                border-width: 1px 0 0 0;
+            }
+            .card {
+                background: #FFF;
+                border-radius: 3px;
+                padding: 10px;
+            }
+            
+            .skill-level {
+              border-radius: 3px;
+              position: absolute;
+              top: 10px;
+              bottom: 10px;
+              left: 0;
+              width: 10px;
+              box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5);
+            }
+            .skill-level .skill-progress {
+              position: absolute;
+              border-radius: 3px;
+              bottom: 0;
+              width: 100%;
+              -webkit-transition: height 1s ease;
+            }
+            .skill-level .skill-progress.beginner {
+              height: 50%;
+              background: #e74c3c;
+            }
+            .skill-level .skill-progress.intermediate {
+              height: 70%;
+              background: #f1c40f;
+            }
+            .skill-level .skill-progress.advanced {
+              height: 80%;
+              background: #428bca;
+            }
+            .skill-level .skill-progress.master {
+              height: 95%;
+              background: #5cb85c;
+            }
+            .skill-info {
+              margin-left: 10px;
+            }
+            @media (max-width: 480px) {
+              .skill-info {
+                margin-left: 20px;
+              }
+            }
+            .skill-info > strong {
+              font-weight: 400;
+              font-size: 24px;
+              color: #1d1d1d;
+              line-height: 24px;
+            }
+            
+            .list-unstyled {
+              padding-left: 0;
+              list-style: none;
+            }
+            
+            .card-skills {
+              position: relative;
+            }
+            
+            .space-top {
+                margin-top: 5px;
+            }
+            
+            #container {
+              max-width: 800px;
+              margin: 0 auto;
+            }
+            
+            #elevator-pitch {
+              text-align: center;
+              font-size: 24px;
+              color: #BFC1C3;
+              text-transform: uppercase;
+              font-weight: normal;
+            }
+            
+            .res-label {
+              font-style: italic;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <main id="main">
+            <div id="container">
+                <header>
+                     <h1>Your Name</h1>
+                    <div id="contact">
+                        <div class="email"><a href="mailto:your-email@your-website.com">your-email@your-website.com</a>
+                        </div>
+                        <div class="phone">1-999-999-9999</div>
+                        <div class="website"><a href="http://your-website.com">http://your-website.com</a>
+                        </div>
+                    </div>
+                </header>
+                <hr>
+                <section id="summary">
+                    <header> <span class="fa fa-lg fa-info"></span> 
+                         <h2>info</h2>
+
+                    </header>A brief description of yourself as a candidate that appears in some résumé
+                    themes. You may use <strong>Markdown</strong> and/or <strong>HTML</strong> formatting
+                    here including <a href="https://en.wikipedia.org/wiki/Special:Random">links</a> or
+                    stick to plain text.</section>
+                <hr>
+                <section id="skills">
+                    <header>
+                         <h2>Skills</h2>
+                    </header> <span class="fa fa-lg fa-code"></span>
+                    <ul class="list-unstyled">
+                        <li class="card card-nested card-skills">
+                            <div class="skill-level" rel="tooltip" title="advanced" data-placement="left">
+                                <div class="skill-progress advanced"></div>
+                            </div>
+                            <div class="skill-info"> <strong>Web Development</strong>
+                                <div class="space-top labels">
+                                    <div class="label label-keyword"> <span class="kw">LAMP</span>
+                                    </div>
+                                    <div class="label label-keyword"> <span class="kw">JavaScript</span>
+                                    </div>
+                                    <div class="label label-keyword"> <span class="kw">HTML 5</span>
+                                    </div>
+                                    <div class="label label-keyword"> <span class="kw">Angular.js</span>
+                                    </div>
+                                    <div class="label label-keyword"> <span class="kw">jQuery</span>
+                                    </div>
+                                    <div class="label label-keyword"> <span class="kw">Sass</span>
+                                    </div>
+                                    <div class="label label-keyword"> <span class="kw">LESS</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="card card-nested card-skills">
+                            <div class="skill-level" rel="tooltip" title="intermediate" data-placement="left">
+                                <div class="skill-progress intermediate"></div>
+                            </div>
+                            <div class="skill-info"> <strong>Ninjitsu</strong>
+                                <div class="space-top labels">
+                                    <div class="label label-keyword"> <span class="kw">Tokagure Ryu</span>
+                                    </div>
+                                    <div class="label label-keyword"> <span class="kw">Shuriken</span>
+                                    </div>
+                                    <div class="label label-keyword"> <span class="kw">Yogen</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="card card-nested card-skills">
+                            <div class="skill-level" rel="tooltip" title="beginner" data-placement="left">
+                                <div class="skill-progress beginner"></div>
+                            </div>
+                            <div class="skill-info"> <strong>Skillset #3</strong>
+                                <div class="space-top labels">
+                                    <div class="label label-keyword"> <span class="kw">Your</span>
+                                    </div>
+                                    <div class="label label-keyword"> <span class="kw">keywords</span>
+                                    </div>
+                                    <div class="label label-keyword"> <span class="kw">here</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+                <hr>
+                <section id="employment">
+                    <header> <span class="fa fa-lg fa-building"></span> 
+                         <h2>employment</h2>
+
+                    </header>
+                    <div>
+                         <h3><em>Head Honcho</em>,
+
+    <a href="http://employer-website.com">Most Recent Employer</a>
+
+    </h3> <span class="tenure">2013-10 — Present</span>| <span class="keywords">spin widgets CRM PM Ninjitsu Six Sigma </span>
+                        <p>
+                            <p>A summary of your role in this position. Can include <strong>Markdown</strong> and
+                                inline <strong>HTML</strong> formatting.</p>
+                        </p>
+                        <ul>
+                            <li>Increased profits on left-handed spin widgets by 35%.</li>
+                            <li>Participated in iterative/incremental devolution.</li>
+                            <li>Promoted to Head Ninja after 500 successful cage matches.</li>
+                        </ul>
+                    </div>
+                    <div>
+                         <h3><em>Worker Bee</em>,
+
+    <a href="http://employer-website.com">Previous Employer</a>
+
+    </h3> <span class="tenure">2009-07 — 2013-10</span>| <span class="keywords">keyword1 KW2 KW2++ YAKW </span>
+                        <p>
+                            <p>A summary of your previous role. Can include <strong>Markdown</strong> and
+                                inline <strong>HTML</strong> formatting.</p>
+                        </p>
+                        <ul>
+                            <li>Highlight #1.</li>
+                            <li>Highlight #2.</li>
+                            <li>Highlight #3.</li>
+                        </ul>
+                    </div>
+                </section>
+                <hr>
+                <section id="projects">
+                    <header> <span class="fa fa-lg fa-star"></span> 
+                         <h2>projects</h2>
+
+                    </header>
+                    <div>
+                        
+<h3><em>Contributor</em>,
+
+<a href="http://project-page.org">Awesome Project #1</a>
+
+</h3>
+<span class="keywords">Tag1 Tag2 Tag3 Tag4 </span>
+                        <p>Show off your project work with a Markdown-and-HTML friendly summary of
+                            your role on the project. Software projects, creative projects, business
+                            projects can all appear here.</p>
+                        <ul>
+                            <li>Project Highlight #1</li>
+                            <li>Project Highlight #2</li>
+                            <li>Project Highlight #3</li>
+                        </ul>
+                    </div>
+                    <div>
+                        
+<h3><em>Creator</em>,
+
+<a href="http://asteroids-demo.org">Asteroids</a>
+
+</h3>
+<span class="keywords">C++ Unreal Engine 3D DirectX </span>
+                        <p>Conceived, designed, implemented, and created 3D Asteroids space shooter
+                            with Unreal Engine IV and C++.</p>
+                        <ul>
+                            <li>Project Highlight #1</li>
+                            <li>Project Highlight #2</li>
+                            <li>Project Highlight #3</li>
+                        </ul>
+                    </div>
+                </section>
+                <hr>
+                <section id="education">
+                    <header> <span class="fa fa-lg fa-mortar-board"></span> 
+                         <h2>education</h2>
+
+                    </header>
+                    <div>
+                        
+<h3><em>BSCS</em>,
+
+<a href="http://acmeuniversity.edu">Acme University</a>
+
+</h3>
+<span class="tenure">2004-09 — 2009-06</span>| <span class="keywords">Data Algorithms Optimization Neural Networks C C++ Java HTTP TCP/IP </span>
+                        <p>Graduate of Acme University, summer of 2009. Go <a href="https://en.wikipedia.org/wiki/Coyote">Coyotes</a>!</p>
+                    </div>
+                </section>
+                <hr>
+                <section id="service">
+                    <header> <span class="fa fa-lg fa-child"></span> 
+                         <h2>service</h2>
+
+                    </header>
+                    <div>
+                         <h3><em>Volunteer Coordinator</em>,
+      <a href="http://themommiesnetwork.org">The Mommies Network</a>
+    </h3>
+ <span class="tenure">2006-06 — Present</span>
+
+                        <p>
+                            <p>A summary of your volunteer experience at this organization. Can include <strong>Markdown</strong> and
+                                inline <strong>HTML</strong> formatting.</p>
+                        </p>
+                    </div>
+                    <div>
+                         <h3><em>MOS</em>,
+      <a href="https://service-website.mil">Air Force</a>
+    </h3>
+ <span class="tenure">2004-01 — Present</span>
+
+                        <p>
+                            <p>A summary of your service experience with this organization. Can include <strong>Markdown</strong> and
+                                inline <strong>HTML</strong> formatting.</p>
+                        </p>
+                    </div>
+                </section>
+                <hr>
+                <section id="samples">
+                    <header> <span class="fa fa-lg fa-share"></span> 
+                         <h2>samples</h2>
+
+                    </header>
+                    <div>
+                         <h3>
+    <a href="http://project-repo.com">Work Sample #1</a>
+    </h3>
+ <span class="tenure">2015-01</span>
+
+                        <p>A technical or creative <strong>work sample</strong>.</p>
+                    </div>
+                    <div>
+                         <h3>
+    <a href="http://project-repo.com">Creative Sample #2</a>
+    </h3>
+ <span class="tenure">2015-01</span>
+
+                        <p>Another technical or creative sample. You can use <a href="https://daringfireball.net/projects/markdown/">Markdown</a> here.</p>
+                    </div>
+                </section>
+                <hr>
+                <section id="writing">
+                    <header> <span class="fa fa-lg fa-pencil"></span> 
+                         <h2>writing</h2>
+
+                    </header>
+                    <div>
+                         <h3><em><a href="http://coding-snorer.com">My Blog</a></em>,
+
+
+
+      Medium.com</h3> <span class="tenure">2010</span>
+                        <p>Your blog or online home.</p>
+                    </div>
+                    <div>
+                         <h3><em><a href="http://codeproject.com/something-i-wrote-once">Something I Wrote Once</a></em>,
+
+
+
+      Acme University Press</h3> <span class="tenure">2009</span>
+                        <p>List your blogs, articles, essays, novels, and dissertations.</p>
+                    </div>
+                </section>
+                <hr>
+                <section id="reading">
+                    <header> <span class="fa fa-lg fa-book"></span> 
+                         <h2>reading</h2>
+
+                    </header>
+                    <div>
+                         <h3><em><a href="http://www.amazon.com/Other-Copenhagens-And-Stories/dp/0984749209">Other Copenhagens</a></em>, Edmund Jorgensen</h3>
+ <span class="tenure">Current</span>
+
+                    </div>
+                    <div>
+                         <h3><em><a href="https://www.reddit.com/r/programming">r/programming</a></em></h3>
+ <span class="tenure">Current</span>
+
+                    </div>
+                    <div>
+                         <h3><em><a href="https://news.ycombinator.com/">Hacker News</a></em></h3>
+ <span class="tenure">Current</span>
+
+                    </div>
+                </section>
+                <hr>
+                <section id="recognition">
+                    <header> <span class="fa fa-lg fa-trophy"></span> 
+                         <h2>recognition</h2>
+
+                    </header>
+                    <div>
+                         <h3><em>Awesomeness Award</em>, <a href="https://fluentdesk.com/hackmyresume">HackMyResume</a></h3>
+ <span class="tenure">2016</span>
+
+                        <p>Thanks for being a HackMyResume / FluentCV user!</p>
+                    </div>
+                    <div>
+                         <h3><em>MVP: SpinWidget Technology</em>, Big Software</h3>
+ <span class="tenure">2015</span>
+
+                        <p>For work in promotion and popularization of SpinWidget technology.</p>
+                    </div>
+                </section>
+                <hr>
+                <section id="testimonials">
+                    <header> <span class="fa fa-lg fa-quote-left"></span> 
+                         <h2>testimonials</h2>
+
+                    </header>
+                    <div>
+                         <h3><em>John Doe</em></h3>
+
+                        <p>Such-and-such is awesome! I&#39;d hire him/her again in a second!</p>
+                    </div>
+                    <div>
+                         <h3><em>Somebody Important</em></h3>
+
+                        <p>Hands-down <em>the best developer/manager/spelunker/coworker/etc</em> I&#39;ve
+                            ever worked with. Emphasis <em>mine!</em>
+                        </p>
+                    </div>
+                </section>
+                <hr>
+                <section id="references">
+                    <header> <span class="fa fa-lg fa-thumbs-o-up"></span> 
+                         <h2>references</h2>
+
+                    </header>
+                    <div>
+                         <h3><em>John Doe</em>, Manager @ Somewhere Inc.</h3>
+
+                        <p>Contact information available on request.</p>
+                    </div>
+                    <div>
+                         <h3><em>Jane Q. Fullstacker</em>, Coworker</h3>
+
+                        <p>Contact information available on request.</p>
+                    </div>
+                </section>
+                <hr>
+                <section id="interests">
+                    <header> <span class="fa fa-lg fa-bicycle"></span> 
+                         <h2>interests</h2>
+
+                    </header>
+                    <div>
+                         <h3><em>GitHub</em></h3>
+ <span class="tenure">Current</span>
+
+                        <p>Regular GitHub user and tinkerer.</p>
+                    </div>
+                    <div>
+                         <h3><em>chess</em></h3>
+ <span class="tenure">Current</span>
+
+                        <p>Avid chess player.</p>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </body>
+
+</html>
